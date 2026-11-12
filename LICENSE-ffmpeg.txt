@@ -1,0 +1,53 @@
+================================================================
+ffmpeg License Notice
+================================================================
+
+This package includes binaries built from FFmpeg.
+
+FFmpeg is a trademark of Fabrice Bellard, originator of the FFmpeg
+project. FFmpeg is free software licensed under the LGPL (Lesser
+General Public License) version 2.1 or later, with some optional
+parts under GPL version 2 or later.
+
+  FFmpeg project home : https://ffmpeg.org/
+  License information : https://ffmpeg.org/legal.html
+  Source code         : https://ffmpeg.org/download.html
+
+The FFmpeg binaries bundled with pubcode may be built with
+nonfree components (including libfdk_aac), which means the build
+is licensed under GPL v2 or later.
+
+----------------------------------------------------------------
+Build source
+----------------------------------------------------------------
+
+This package's ffmpeg.exe / ffprobe.exe / ffplay.exe are from:
+
+  ffmpeg-master-latest-win64-nonfree
+  https://github.com/BtbN/FFmpeg-Builds/releases
+  (or your own build / other trusted build)
+
+You can replace the ffmpeg binaries in the ffmpeg\ subfolder with
+any compatible Windows x64 build at any time.
+
+----------------------------------------------------------------
+Compliance
+----------------------------------------------------------------
+
+If you redistribute this package:
+
+  * Keep this LICENSE-ffmpeg.txt file intact.
+  * Keep the ffmpeg\ subfolder intact (binaries must stay with
+    this notice).
+  * Do not remove copyright notices from FFmpeg source.
+  * For commercial use, verify your specific ffmpeg build's
+    license terms (GPL vs LGPL, nonfree components, etc.).
+
+For the exact license of the binaries you received, run:
+
+  ffmpeg\ffmpeg.exe -version
+
+The build configuration line printed by that command lists which
+external libraries are compiled in (--enable-libfdk-aac, etc.).
+
+================================================================
