@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pubcode v1.1.0 · 烈火智能编码 · README</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #f6f9fc;
+            --card-bg: #ffffff;
+            --primary: #0b6e4f;
+            --primary-light: #e3f5ed;
+            --primary-deep: #084d37;
+            --text-main: #0c1f2b;
+            --text-soft: #2d4050;
+            --border-light: #e2eaf2;
+            --code-bg: #f2f6fa;
+            --code-text: #1b3b55;
+            --tag-bg: #e1f7ed;
+            --tag-text: #0a5e3f;
+            --shadow-sm: 0 4px 12px rgba(0, 20, 30, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+            --font-mono: 'SF Mono', 'Cascadia Code', 'Menlo', 'Consolas', monospace;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.55;
+            padding: 2rem 1rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 1120px; margin: 0 auto; }
+
+        /* 头部 */
+        .hero {
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f0faf5 100%);
+            border-radius: var(--radius-lg);
+            padding: 1.8rem 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
+        .version-badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(11, 110, 79, 0.15);
+        }
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #0a2e24;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        h1 small { font-size: 1rem; font-weight: 400; color: var(--text-soft); opacity: 0.85; }
+        .subhead {
+            font-size: 1.05rem;
+            color: var(--text-soft);
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        .badge-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+        .badge {
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.9rem;
+            border-radius: 30px;
+            display: inline-block;
+            border: 1px solid #b8dfd0;
+            letter-spacing: 0.2px;
+        }
+
+        /* 网格 */
+        .grid { display: flex; flex-direction: column; gap: 1.75rem; }
+        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media (max-width: 750px) { .grid-2col { grid-template-columns: 1fr; } }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 1.1rem 1.8rem 0.5rem 1.8rem;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .card-header h2 {
+            font-size: 1.35rem;
+            font-weight: 650;
+            color: #1a3a2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card-header h2 .icon { font-size: 1.5rem; line-height: 1; }
+        .card-body { padding: 1.5rem 1.8rem 1.8rem 1.8rem; }
+
+        /* 表格 */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            background: #fff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            min-width: 540px;
+        }
+        th {
+            text-align: left;
+            background: #f0f7f3;
+            font-weight: 600;
+            color: #0b4e3a;
+            padding: 0.7rem 1rem;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--border-light);
+        }
+        td {
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: top;
+            color: #1f3b4a;
+        }
+        tr:last-child td { border-bottom: none; }
+        .table-compact td, .table-compact th { padding: 0.45rem 0.9rem; }
+
+        /* 代码 */
+        pre {
+            background: var(--code-bg);
+            padding: 0.9rem 1.2rem;
+            border-radius: var(--radius-md);
+            font-family: var(--font-mono);
+            font-size: 0.86rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: var(--code-text);
+            border: 1px solid #dde7ee;
+            margin: 0.8rem 0;
+        }
+        code {
+            font-family: var(--font-mono);
+            background: #eef3f7;
+            padding: 0.15rem 0.45rem;
+            border-radius: 6px;
+            font-size: 0.86em;
+            color: #16634b;
+            border: 1px solid #d6e2ec;
+        }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+
+        .cmd-syntax {
+            background: #1e2b36;
+            color: #d9e9f2;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.98rem;
+            overflow-x: auto;
+            margin: 0.6rem 0;
+            border: 1px solid #14222b;
+        }
+        .cmd-syntax code { background: transparent; border: none; color: inherit; }
+
+        .example-block {
+            background: #f9fcff;
+            border-left: 4px solid var(--primary);
+            padding: 0.9rem 1.3rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 1rem 0;
+            border: 1px solid var(--border-light);
+            border-left-width: 4px;
+        }
+        .example-block pre { background: transparent; border: none; padding: 0.2rem 0; margin: 0.4rem 0; }
+
+        .note {
+            background: #fef9e7;
+            border-left: 3px solid #f5b041;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #5e4a1f;
+            margin: 1rem 0;
+        }
+        .note-soft {
+            background: #eef6ff;
+            border-left: 3px solid #3a8dde;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #1a4b7a;
+            margin: 1rem 0;
+        }
+
+        ul, ol { margin: 0.6rem 0 0.6rem 1.3rem; color: var(--text-soft); }
+        li { margin-bottom: 0.25rem; }
+
+        hr { border: none; border-top: 1px solid var(--border-light); margin: 1.5rem 0 1rem 0; }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 2.8rem;
+            font-size: 0.8rem;
+            color: #7a8f9e;
+            border-top: 1px solid var(--border-light);
+            padding-top: 1.5rem;
+        }
+
+        .kbd {
+            background: #eef3f7;
+            border-radius: 6px;
+            padding: 0.1rem 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            border: 1px solid #d0dce8;
+            color: #1b3b55;
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem 0.8rem; }
+            h1 { font-size: 1.7rem; }
+            .hero { padding: 1.2rem; }
+            .card-body { padding: 1.2rem; }
+            .card-header { padding: 1rem 1.2rem 0.4rem 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 头部 -->
+    <div class="hero">
+        <div class="version-badge">v1.1.0 · 烈火智能编码</div>
+        <h1>
+            pubcode.exe
+            <small>Windows CLI 智能编码工具</small>
+        </h1>
+        <div class="subhead">
+            <span>基于 ffprobe 智能分析 + ffmpeg 转码/封装的 Windows CLI 工具</span>
+        </div>
+        <div class="badge-row">
+            <span class="badge">version 1.1.0</span>
+            <span class="badge">Windows x64</span>
+            <span class="badge">ffmpeg 5.1+</span>
+            <span class="badge">MIT License</span>
+        </div>
+        <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-soft); display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;">
+            <span>🎯 智能决策（位深 / HDR / 色度 / VFR）</span>
+            <span>🎬 H.265 / H.264 · CRF · 2-Pass</span>
+            <span>🎨 HDR10 / HLG · 自动 tonemap</span>
+            <span>🔊 HE-AACv2 48k · 降混立体声</span>
+        </div>
+    </div>
+
+    <div class="grid">
+        <!-- 特性 -->
+        <div class="card">
+            <div class="card-header">
+                <h2><span class="icon">✨</span> 特性</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>类别</th><th>能力</th></tr></thead>
+                        <tbody>
+                            <tr><td>🎯 <strong>智能决策</strong></td><td>源位深 / HDR / 色度 / VFR 自动识别，参数自动适配</td></tr>
+                            <tr><td>🎬 <strong>转码</strong></td><td>H.264 / H.265，CRF 恒定质量，2-Pass VBR</td></tr>
+                            <tr><td>🎨 <strong>HDR</strong></td><td>HDR10 / HLG 保留输出，HDR→SDR 自动 tonemap（按源类型分流曲线）</td></tr>
+                            <tr><td>🎞️ <strong>位深</strong></td><td>8bit / 10bit 智能选择，10→8bit 用 <code>error_diffusion</code> 抖动</td></tr>
+                            <tr><td>🔊 <strong>音频</strong></td><td>HE-AACv2 48k 默认，AAC 兜底，6ch 以上自动降混立体声</td></tr>
+                            <tr><td>📼 <strong>封装</strong></td><td>流复制封装 + <code>pubcode v1</code> 元数据打标</td></tr>
+                            <tr><td>🖥️ <strong>体验</strong></td><td>实时进度条 + ETA，两遍编码分遍显示，管道无死锁</td></tr>
+                            <tr><td>🔧 <strong>兼容</strong></td><td>ffmpeg 5.1+ / 6.x 自动适配（<code>-fps_mode</code> / <code>-vsync</code> 能力探测）</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 安装 + 快速开始 -->
+        <div class="grid-2col">
+            <div class="card">
+                <div class="card-header">
+                    <h2><span class="icon">📥</span> 安装</h2>
+                </div>
+                <div class="card-body">
+                    <p style="font-weight: 500;">方式一：下载 zip（推荐）</p>
+                    <ol style="margin-bottom: 0.8rem;">
+                        <li>下载 <code>pubcode-v1.1.0-win64.zip</code></li>
+                        <li>解压到任意目录</li>
+                        <li>在该目录打开 CMD / PowerShell 即可使用</li>
+                    </ol>
+                    <pre><code>D:\tools\pubcode\
+├── pubcode.exe            主程序
+├── ffmpeg\
+│   ├── ffmpeg.exe         ffmpeg 主程序（勿删）
+│   ├── ffprobe.exe        ffprobe（勿删）
+│   └── ffplay.exe         可选，pubcode 不使用
+├── README.md              本文件
+└── LICENSE-ffmpeg.txt     ffmpeg 许可说明</code></pre>
+                    <p style="font-weight: 500; margin-top: 0.6rem;">方式二：源码运行</p>
+                    <pre><code>git clone https://github.com/yourname/pubcode.git
+cd pubcode
+python pubcode.py --version</code></pre>
+                    <p style="font-weight: 500; margin-top: 0.6rem;">方式三：加入 PATH（可选）</p>
+                    <p style="font-size: 0.9rem;">把 <code>D:\tools\pubcode\</code> 加入系统 PATH 后，可在任意目录直接运行 <code>pubcode</code>。</p>
+                    <div class="note-soft" style="margin-top: 0.6rem;">
+                        <strong>系统要求：</strong> Windows 7 x64 及以上（推荐 Win10/11），无需安装 Python（zip 版），磁盘约 200MB（含 ffmpeg）。
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2><span class="icon">🚀</span> 快速开始</h2>
+                </div>
+                <div class="card-body">
+                    <pre><code>:: 1. 查看媒体信息
+pubcode.exe info in.mkv
+
+:: 2. 智能转码（H.265 + MP4 + HE-AACv2 48k）
+pubcode.exe vc:v1 in.mkv out.mp4
+
+:: 3. 只给输入，自动生成 in.pubcode.mp4
+pubcode.exe vc:v1 in.mkv
+
+:: 4. 纯封装（流复制，秒级完成）
+pubcode.exe av:co in.mp4 out.mp4
+
+:: 5. 版本与 ffmpeg 能力自检
+pubcode.exe --version</code></pre>
+                    <p style="font-weight: 500; margin-top: 0.6rem;">基本概念</p>
+                    <div class="cmd-syntax" style="font-size: 0.85rem; padding: 0.7rem 1rem;">
+                        <code>pubcode.exe &lt;动作&gt; &lt;输入文件&gt; [输出文件] [选项...]</code>
+                    </div>
+                    <div class="table-wrap" style="margin-top: 0.6rem;">
+                        <table class="table-compact">
+                            <thead><tr><th>动作</th><th>用途</th><th>重编码</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>vc:v1</code></td><td>视频转码</td><td>是</td></tr>
+                                <tr><td><code>av:co</code></td><td>音视频封装</td><td>否（流复制）</td></tr>
+                                <tr><td><code>info</code></td><td>查看媒体信息</td><td>—</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 命令速查 -->
+        <div class="card">
+            <div class="card-header">
+                <h2><span class="icon">📖</span> 命令速查</h2>
+            </div>
+            <div class="card-body">
+                <div class="grid-2col">
+                    <div>
+                        <p style="font-weight: 500; margin-bottom: 0.3rem;">动作</p>
+                        <table class="table-compact" style="width:100%;">
+                            <thead><tr><th>动作</th><th>含义</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>vc:v1</code></td><td>视频转码（重编码）</td></tr>
+                                <tr><td><code>av:co</code></td><td>音视频封装（流复制）</td></tr>
+                                <tr><td><code>info</code></td><td>查看媒体信息</td></tr>
+                                <tr><td><code>--version</code></td><td>版本与 ffmpeg 能力自检</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <p style="font-weight: 500; margin-bottom: 0.3rem;">输出文件默认值</p>
+                        <table class="table-compact" style="width:100%;">
+                            <tr><td>指定 <code>out.mp4</code></td><td>用 <code>out.mp4</code></td></tr>
+                            <tr><td>指定 <code>out</code>（无扩展名）</td><td>自动变 <code>out.mp4</code></td></tr>
+                            <tr><td>指定 <code>out.avi</code>（非标准）</td><td>改为 <code>out.mp4</code> 并提示</td></tr>
+                            <tr><td>不指定输出</td><td>自动 <code>&lt;输入名&gt;.pubcode.mp4</code></td></tr>
+                        </table>
+                    </div>
+                </div>
+                <p style="font-weight: 500; margin: 1rem 0 0.2rem;">常用选项</p>
+                <div class="table-wrap">
+                    <table class="table-compact">
+                        <thead><tr><th>选项</th><th>取值</th><th>默认</th><th>说明</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>--codec</code></td><td>h264 / h265</td><td>h265</td><td>视频编码器</td></tr>
+                            <tr><td><code>--crf</code></td><td>18 / 20 / 23 / 26 / 28</td><td>H.265=28, H.264=23</td><td>恒定质量</td></tr>
+                            <tr><td><code>--preset</code></td><td>medium / slow / veryslow</td><td>slow</td><td>编码速度/质量</td></tr>
+                            <tr><td><code>--mode</code></td><td>crf / 2pass</td><td>crf</td><td>码率控制模式</td></tr>
+                            <tr><td><code>--video-br</code></td><td>4M / 800k</td><td>4M</td><td>仅 2pass 生效</td></tr>
+                            <tr><td><code>--hdr</code></td><td>auto / sdr / hdr10 / hlg</td><td>auto</td><td>输出 HDR 模式</td></tr>
+                            <tr><td><code>--tonemap</code></td><td>auto / on / off</td><td>auto</td><td>HDR→SDR 色调映射</td></tr>
+                            <tr><td><code>--resolution</code></td><td>1920:1080 / 1920x1080</td><td>source</td><td>缩放分辨率</td></tr>
+                            <tr><td><code>--fps</code></td><td>数字 / source</td><td>source</td><td>输出帧率</td></tr>
+                            <tr><td><code>--tenbit</code></td><td>0 / 1</td><td>智能</td><td>强制 8bit / 10bit</td></tr>
+                            <tr><td><code>--pixfmt</code></td><td>yuv420p10le 等</td><td>智能</td><td>强制像素格式</td></tr>
+                            <tr><td><code>--audio-codec</code></td><td>aac / fdk_he_v2</td><td>fdk_he_v2</td><td>音频编码</td></tr>
+                            <tr><td><code>--audio-br</code></td><td>48k / 64k / 128k</td><td>48k / 128k</td><td>音频码率</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 动作详解 -->
+        <div class="card">
+            <div class="card-header">
+                <h2><span class="icon">🎬</span> 动作详解</h2>
+            </div>
+            <div class="card-body">
+                <p style="font-weight: 500; margin-bottom: 0.2rem;">vc:v1 — 视频转码 · 默认行为（不写任何选项）</p>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>项目</th><th>默认值</th></tr></thead>
+                        <tbody>
+                            <tr><td>视频编码</td><td><strong>H.265 (libx265)</strong> + <code>hvc1</code> tag</td></tr>
+                            <tr><td>码率控制</td><td>CRF（H.265=28，H.264=23）</td></tr>
+                            <tr><td>编码预设</td><td><code>slow</code></td></tr>
+                            <tr><td>像素格式</td><td>智能（8bit→420p，10bit→420p10le，4:2:2/4:4:4 保留）</td></tr>
+                            <tr><td>HDR</td><td>智能（源 HDR → 目标 SDR 自动 tonemap）</td></tr>
+                            <tr><td>帧率</td><td>保留源；VFR 源用 <code>passthrough</code></td></tr>
+                            <tr><td>音频编码</td><td><strong>HE-AACv2 48k</strong>（缺失 libfdk_aac 时降级 AAC 128k）</td></tr>
+                            <tr><td>多声道</td><td>6ch 以上自动降混 2ch</td></tr>
+                            <tr><td>容器</td><td>MP4 + <code>+faststart</code></td></tr>
+                            <tr><td>元数据</td><td><code>encoder=pubcode v1</code>、<code>comment=pubcode v1</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="font-weight: 500; margin: 1rem 0 0.2rem;">示例</p>
+                <div class="example-block">
+                    <pre><code>pubcode.exe vc:v1 in.mkv out.mp4          :: 全自动
+pubcode.exe vc:v1 in.mkv                  :: 只给输入，自动生成 in.pubcode.mp4
+pubcode.exe vc:v1 in.mp4 out.mp4 --codec h264
+pubcode.exe vc:v1 in.mp4 out.mp4 --crf 20
+pubcode.exe vc:v1 4k.mp4 out1080p.mp4 --resolution 1920:1080
+pubcode.exe vc:v1 hdr.mp4 hdr_out.mp4 --hdr hdr10
+pubcode.exe vc:v1 hdr.mp4 sdr.mp4 --tonemap on
+pubcode.exe vc:v1 in.mp4 out.mp4 --mode 2pass --video-br 4M
+pubcode.exe vc:v1 in10bit.mp4 out8bit.mp4 --tenbit 0
+pubcode.exe vc:v1 in.mp4 out.mkv          :: 输出 MKV</code></pre>
+                </div>
+
+                <div class="grid-2col" style="margin-top: 1rem;">
+                    <div>
+                        <p style="font-weight: 500;">av:co — 音视频封装</p>
+                        <p style="font-size: 0.9rem;">流复制（<code>-c copy</code>），不重编码。写入 <code>encoder=pubcode v1</code>、<code>comment=pubcode v1</code>，输出 MP4 加 <code>+faststart</code>。</p>
+                        <pre><code>pubcode.exe av:co in.mp4 out.mp4
+pubcode.exe av:co in.mp4        :: 生成 in.pubcode.mp4
+pubcode.exe av:co in.mp4 out.mkv</code></pre>
+                        <p style="font-size: 0.82rem; margin-top: 0.3rem;"><span class="badge">验证打标</span> <code>ffprobe ... | findstr /i "encoder comment"</code></p>
+                    </div>
+                    <div>
+                        <p style="font-weight: 500;">info — 查看媒体信息</p>
+                        <pre style="font-size: 0.8rem;"><code>📄 文件: in.mkv
+   容器: matroska,webm  时长: 00:22:15  总码率: 8200 kbps
+   🎞️ 视频: hevc  1920x800  23.976fps  yuv420p10le  10-bit SDR
+   🔊 音频: eac3  6ch  48000Hz  640 kbps</code></pre>
+                        <p style="font-size: 0.82rem; margin-top: 0.3rem;">HDR 素材额外显示元数据，VFR 素材标注 <code>VFR</code>。</p>
+                        <p style="font-weight: 500; margin-top: 0.5rem;">--version — 能力自检</p>
+                        <pre style="font-size: 0.78rem;"><code>pubcode v1.1.0
+ffmpeg : D:\tools\pubcode\ffmpeg\ffmpeg.exe
+libfdk_aac   : yes
+zscale       : yes
+tonemap      : yes
+-fps_mode    : yes
+-vsync       : no</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 参数完整参考 -->
+        <div class="card">
+            <div class="card-header">
+                <h2><span class="icon">⚙️</span> 参数完整参考</h2>
+            </div>
+            <div class="card-body">
+                <div class="grid-2col">
+                    <div>
+                        <p style="font-weight: 500; margin-bottom: 0.2rem;">视频参数</p>
+                        <table class="table-compact" style="width:100%;">
+                            <thead><tr><th>参数</th><th>取值</th><th>默认</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>--codec</code></td><td>h264 / h265</td><td>h265</td></tr>
+                                <tr><td><code>--crf</code></td><td>数字</td><td>H.265=28, H.264=23</td></tr>
+                                <tr><td><code>--preset</code></td><td>medium / slow / veryslow</td><td>slow</td></tr>
+                                <tr><td><code>--mode</code></td><td>crf / 2pass</td><td>crf</td></tr>
+                                <tr><td><code>--video-br</code></td><td>4M / 800k / 2000000</td><td>4M</td></tr>
+                                <tr><td><code>--resolution</code></td><td>W:H / WxH / source</td><td>source</td></tr>
+                                <tr><td><code>--fps</code></td><td>数字 / source</td><td>source</td></tr>
+                                <tr><td><code>--tenbit</code></td><td>0 / 1</td><td>智能</td></tr>
+                                <tr><td><code>--pixfmt</code></td><td>yuv420p10le 等</td><td>智能</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <p style="font-weight: 500; margin-bottom: 0.2rem;">HDR 参数</p>
+                        <table class="table-compact" style="width:100%;">
+                            <thead><tr><th>参数</th><th>取值</th><th>默认</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>--hdr</code></td><td>auto/sdr/hdr10/hlg</td><td>auto</td></tr>
+                                <tr><td><code>--tonemap</code></td><td>auto/on/off</td><td>auto</td></tr>
+                            </tbody>
+                        </table>
+                        <p style="font-weight: 500; margin: 0.8rem 0 0.2rem;">音频参数</p>
+                        <table class="table-compact" style="width:100%;">
+                            <thead><tr><th>参数</th><th>取值</th><th>默认</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>--audio-codec</code></td><td>aac / fdk_he_v2</td><td>fdk_he_v2</td></tr>
+                                <tr><td><code>--audio-br</code></td><td>48k / 64k / 128k</td><td>HE=48k, AAC=128k</td></tr>
+                            </tbody>
+                        </table>
+                        <p style="font-size: 0.82rem; color: var(--text-soft); margin-top: 0.3rem;">HE-AACv2 强制立体声，6ch 以上自动降混。缺失 libfdk_aac 降级 AAC 128k。</p>
+                    </div>
+                </div>
+                <p style="font-weight: 500; margin: 1rem 0 0.2rem;">--hdr 行为</p>
+                <div class="table-wrap">
+                    <table class="table-compact">
+                        <thead><tr><th>值</th><th>行为</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>auto</code></td><td>源 HDR → 保留 HDR；源 SDR → 输出 SDR</td></tr>
+                            <tr><td><code>sdr</code></td><td>强制 SDR 输出（源 HDR 时自动 tonemap）</td></tr>
+                            <tr><td><code>hdr10</code></td><td>强制 HDR10 输出（写入 master-display + max-cll 元数据）</td></tr>
+                            <tr><td><code>hlg</code></td><td>强制 HLG 输出</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="font-weight: 500; margin: 1rem 0 0.2rem;">CRF 参考值</p>
+                <table class="table-compact" style="width:100%;">
+                    <thead><tr><th>CRF</th><th>H.264</th><th>H.265</th></tr></thead>
+                    <tbody>
+                        <tr><td>18</td><td>视觉无损</td><td>视觉无损</td></tr>
+                        <tr><td>20</td><td>极高质量</td><td>极高质量</td></tr>
+                        <tr><td>23</td><td>均衡（推荐）</td><td>—</td></tr>
+                        <tr><td>26</td><td>—</td><td>高质量</td></tr>
+                        <tr><td><strong>28</strong></td><td>—</td><td><strong>均衡（默认）</strong></td></tr>
+                        <tr><td>30+</td><td>—</td><td>小体积</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 0.85rem; color: var(--text-soft); margin-top: 0.2rem;">H.265 CRF 28 画质大致相当于 H.264 CRF 23。</p>
+            </div>
+        </div>
+
+        <!-- 智能决策机制 -->
+        <div class="card">
+            <div class="card-header">
+                <h2><span class="icon">🧠</span> 智能决策机制</h2>
+            </div>
+            <div class="card-body">
+                <div class="grid-2col">
+                    <div>
+                        <p style="font-weight: 500;">位深决策</p>
+                        <table class="table-compact" style="width:100%;">
+                            <thead><tr><th>源位深</th><th><code>--tenbit</code></th><th>输出</th></tr></thead>
+                            <tbody>
+                                <tr><td>8bit</td><td>未指定</td><td>8bit</td></tr>
+                                <tr><td>8bit</td><td><code>1</code></td><td>10bit</td></tr>
+                                <tr><td>10bit</td><td>未指定</td><td>10bit</td></tr>
+                                <tr><td>10bit</td><td><code>0</code></td><td>8bit（error_diffusion 抖动）</td></tr>
+                            </tbody>
+                        </table>
+                        <p style="font-weight: 500; margin-top: 0.8rem;">HDR 决策</p>
+                        <table class="table-compact" style="width:100%;">
+                            <thead><tr><th>源 HDR</th><th><code>--hdr</code></th><th>输出</th></tr></thead>
+                            <tbody>
+                                <tr><td>SDR</td><td><code>auto</code></td><td>SDR</td></tr>
+                                <tr><td>HDR10</td><td><code>auto</code></td><td>HDR10（保留元数据）</td></tr>
+                                <tr><td>HLG</td><td><code>auto</code></td><td>HLG</td></tr>
+                                <tr><td>HDR</td><td><code>sdr</code></td><td>SDR（自动 tonemap，按源曲线分流）</td></tr>
+                                <tr><td>SDR</td><td><code>hdr10</code></td><td>HDR10 标记（内容仍是 SDR，不推荐）</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <p style="font-weight: 500;">色度决策</p>
+                        <table class="table-compact" style="width:100%;">
+                            <thead><tr><th>源像素格式</th><th>输出</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>yuv420p*</code></td><td><code>yuv420p</code> / <code>yuv420p10le</code></td></tr>
+                                <tr><td><code>yuv422p*</code></td><td><code>yuv422p</code> / <code>yuv422p10le</code>（x265 main422-10）</td></tr>
+                                <tr><td><code>yuv444p*</code></td><td><code>yuv444p</code> / <code>yuv444p10le</code>（x265 main444-10）</td></tr>
+                            </tbody>
+                        </table>
+                        <p style="font-weight: 500; margin-top: 0.8rem;">帧率决策</p>
+                        <table class="table-compact" style="width:100%;">
+                            <thead><tr><th>源帧率类型</th><th><code>--fps</code></th><th>输出</th></tr></thead>
+                            <tbody>
+                                <tr><td>CFR</td><td><code>source</code></td><td>保留源帧率 + <code>-fps_mode cfr</code></td></tr>
+                                <tr><td>VFR</td><td><code>source</code></td><td>保留 VFR + <code>-fps_mode passthrough</code>（不补帧）</td></tr>
+                                <tr><td>任意</td><td>数字</td><td>强制该帧率 + <code>-fps_mode cfr</code></td></tr>
+                            </tbody>
+                        </table>
+                        <p style="font-weight: 500; margin-top: 0.8rem;">容器 & 音频决策</p>
+                        <table class="table-compact" style="width:100%;">
+                            <tr><td><code>.mp4</code>/<code>.m4v</code>/<code>.mov</code></td><td><code>-movflags +faststart</code></td></tr>
+                            <tr><td><code>.mkv</code></td><td>无（matroska）</td></tr>
+                            <tr><td><code>.ts</code></td><td><code>-mpegts_flags +resend_headers</code></td></tr>
+                            <tr><td>无扩展名</td><td>自动补 <code>.mp4</code></td></tr>
+                            <tr><td>无音频</td><td><code>-an</code></td></tr>
+                            <tr><td>1ch/2ch</td><td>HE-AACv2 48k</td></tr>
+                            <tr><td>6ch/8ch</td><td>HE-AACv2 48k + <code>-ac 2</code> 降混</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 典型场景 -->
+        <div class="card">
+            <div class="card-header">
+                <h2><span class="icon">🔄</span> 典型场景</h2>
+            </div>
+            <div class="card-body">
+                <div class="grid-2col">
+                    <div>
+                        <p style="font-weight: 500;">压缩手机视频（节省 50-70% 体积）</p>
+                        <pre><code>pubcode.exe vc:v1 phone.mp4 out.mp4 --crf 30 --preset medium</code></pre>
+                        <p style="font-weight: 500;">4K 电影转 1080p</p>
+                        <pre><code>pubcode.exe vc:v1 movie_4k.mkv movie_1080p.mp4 --resolution 1920:1080 --crf 24</code></pre>
+                        <p style="font-weight: 500;">转 H.264 兼容老电视</p>
+                        <pre><code>pubcode.exe vc:v1 in.mp4 out_compat.mp4 --codec h264 --audio-codec aac --preset slow</code></pre>
+                        <p style="font-weight: 500;">网络分享（限制码率）</p>
+                        <pre><code>pubcode.exe vc:v1 in.mkv share.mp4 --mode 2pass --video-br 3M --resolution 1280:720</code></pre>
+                    </div>
+                    <div>
+                        <p style="font-weight: 500;">HDR 电影保持 HDR</p>
+                        <pre><code>pubcode.exe vc:v1 hdr_movie.mkv hdr_movie_out.mp4 --hdr hdr10 --crf 22</code></pre>
+                        <p style="font-weight: 500;">HDR 电影转 SDR（老播放器）</p>
+                        <pre><code>pubcode.exe vc:v1 hdr_movie.mkv sdr_movie.mp4 --hdr sdr --tonemap on</code></pre>
+                        <p style="font-weight: 500;">下载的视频重新封装</p>
+                        <pre><code>pubcode.exe av:co downloaded.mp4 out.mp4</code></pre>
+                        <p style="font-weight: 500;">批量处理（批处理脚本）</p>
+                        <pre><code>for %%f in (*.mkv) do pubcode.exe vc:v1 "%%f" "%%~nf.mp4"</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 常见问题 + 退出码 -->
+        <div class="grid-2col">
+            <div class="card">
+                <div class="card-header">
+                    <h2><span class="icon">❓</span> 常见问题</h2>
+                </div>
+                <div class="card-body">
+                    <p><strong>Q1:</strong> 提示"找不到 ffmpeg.exe" → 确认同级 <code>ffmpeg\</code> 子目录含 ffmpeg / ffprobe。</p>
+                    <p><strong>Q2:</strong> 音频输出是 AAC 不是 HE-AACv2 → <code>--version</code> 看 <code>libfdk_aac</code> 是否为 yes，否需 nonfree 构建。</p>
+                    <p><strong>Q3:</strong> HDR 转 SDR 画面发灰 → 检查 <code>zscale</code> / <code>tonemap</code> 是否 yes，缺失时降级。</p>
+                    <p><strong>Q4:</strong> 转码卡住 CPU 不动 → v1.0.2 起已修复管道死锁，可临时 <code>show_stderr=True</code> 排查。</p>
+                    <p><strong>Q5:</strong> 杀毒软件报警 → PyInstaller 打包误报，加入白名单。</p>
+                    <p><strong>Q6:</strong> 输出文件 0 字节 → 检查磁盘空间 / 路径权限，加 <code>show_stderr=True</code> 排查。</p>
+                    <p><strong>Q7:</strong> VFR 视频转码后卡顿 → v1.1.0 已自动 passthrough，可尝试 <code>--fps 30</code>。</p>
+                    <p><strong>Q8:</strong> HDR10 元数据丢失 → v1.1.0 已自动读写，源无元数据时用行业默认值并警告。</p>
+                    <p><strong>Q9:</strong> 2-Pass 第一遍看起来没有缩放 → 正常行为，第一遍只做码率统计，已剔除缩放。</p>
+                    <p><strong>Q10:</strong> 进度条 ETA 不准 → 前 10% 因编码器初始化偏大，之后趋于稳定。</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2><span class="icon">🚦</span> 退出码 & 附录</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-wrap">
+                        <table class="table-compact">
+                            <thead><tr><th>退出码</th><th>含义</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>0</code></td><td>成功</td></tr>
+                                <tr><td><code>1</code></td><td>文件不存在 / ffprobe 解析失败 / ffmpeg 出错 / 超时</td></tr>
+                                <tr><td><code>2</code></td><td>参数错误（未知动作、缺少输入文件）</td></tr>
+                                <tr><td><code>130</code></td><td>用户 Ctrl+C 中止</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="font-weight: 600; margin: 1rem 0 0.3rem;">📋 ffmpeg 能力自检</p>
+                    <table class="table-compact" style="width:100%;">
+                        <thead><tr><th>项目</th><th>说明</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>ffmpeg</code> 路径</td><td>必须指向解压目录内的 <code>ffmpeg\</code>，不能是 system32</td></tr>
+                            <tr><td><code>libfdk_aac</code></td><td><code>yes</code> → HE-AACv2 可用；<code>no</code> → 降级 AAC</td></tr>
+                            <tr><td><code>zscale</code></td><td><code>yes</code> → HDR tonemap 高质量</td></tr>
+                            <tr><td><code>tonemap</code></td><td><code>yes</code> → 支持色调映射</td></tr>
+                            <tr><td><code>-fps_mode</code></td><td><code>yes</code> → 用新版参数</td></tr>
+                            <tr><td><code>-vsync</code></td><td><code>yes</code> → 用老版参数（一般新版这里是 no）</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="note-soft" style="margin-top: 0.6rem; font-size: 0.85rem;">
+                        如果 <code>libfdk_aac</code> / <code>zscale</code> / <code>tonemap</code> 有 <code>no</code>，建议换 <a href="https://github.com/BtbN/FFmpeg-Builds/releases" target="_blank" style="color: var(--primary);">BtbN/FFmpeg-Builds</a> 的 <strong>nonfree</strong> 完整构建。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 许可证 & 版本历史 -->
+        <div class="card">
+            <div class="card-header">
+                <h2><span class="icon">📄</span> 许可证 & 版本历史</h2>
+            </div>
+            <div class="card-body">
+                <div class="grid-2col">
+                    <div>
+                        <p style="font-weight: 500;">许可证</p>
+                        <ul style="margin-top: 0.3rem;">
+                            <li><strong>pubcode</strong>：MIT License</li>
+                            <li><strong>ffmpeg</strong>：LGPL / GPL v2+（详见 <code>LICENSE-ffmpeg.txt</code>）</li>
+                        </ul>
+                        <p style="font-size: 0.9rem; color: var(--text-soft); margin-top: 0.3rem;">本工具仅封装 ffmpeg 命令生成逻辑，不包含 ffmpeg 源码。分发时请遵守 ffmpeg 许可条款。</p>
+                        <p style="font-weight: 500; margin-top: 0.8rem;">致谢</p>
+                        <ul style="margin-top: 0.3rem;">
+                            <li><a href="https://ffmpeg.org/" target="_blank" style="color: var(--primary);">FFmpeg</a> — 音视频处理核心</li>
+                            <li><a href="https://github.com/BtbN/FFmpeg-Builds" target="_blank" style="color: var(--primary);">BtbN/FFmpeg-Builds</a> — Windows 构建</li>
+                            <li><a href="https://pyinstaller.org/" target="_blank" style="color: var(--primary);">PyInstaller</a> — 单文件打包</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p style="font-weight: 500;">版本历史</p>
+                        <table class="table-compact" style="width:100%;">
+                            <thead><tr><th>版本</th><th>主要变化</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>v1.1.0</strong></td><td>HDR10 元数据写入、HLG tonemap 修正、VFR 自动 passthrough、2pass VBV 约束、error_diffusion 抖动、进度条 ETA、2pass 分遍进度</td></tr>
+                                <tr><td>v1.0.3</td><td>默认 HE-AACv2 48k、默认 H.265 + MP4、输出文件名兜底</td></tr>
+                                <tr><td>v1.0.2</td><td>修复管道死锁、<code>-async</code> 改滤镜、显式 map、6ch 降混</td></tr>
+                                <tr><td>v1.0.1</td><td>HDR tonemap、10bit 智能、CRF 按编码器、2pass、容器自动、4:2:2 保留</td></tr>
+                                <tr><td>v1.0.0</td><td>初始版本</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        pubcode v1.1.0 · 烈火智能编码 · Powered by FFmpeg
+    </div>
+</div>
+</body>
+</html>
